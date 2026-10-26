@@ -1,15 +1,19 @@
 const express = require('express');
 const cors = require('cors');
+const authRoutes = require('./routes/auth.routes');
+const { errorHandler } = require('./middleware/error.middleware');
 
 const app = express();
 
-// Middlewares
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
-  credentials: true
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Security & Parsing Middlewares
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    credentials: true
+  })
+);
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // Root welcome route
 app.get('/', (req, res) => {
@@ -31,6 +35,9 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Feature Routes
+app.use('/api/auth', authRoutes);
+
 // 404 Handler for undefined routes
 app.use((req, res, next) => {
   res.status(404).json({
@@ -39,13 +46,7 @@ app.use((req, res, next) => {
   });
 });
 
-// Global Error Handler
-app.use((err, req, res, next) => {
-  console.error('Unhandled Server Error:', err);
-  res.status(err.status || 500).json({
-    success: false,
-    message: err.message || 'Internal Server Error'
-  });
-});
+// Centralized Global Error Handler
+app.use(errorHandler);
 
 module.exports = app;

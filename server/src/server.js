@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = require('./app');
-const connectDB = require('./config/db');
+const { connectDB } = require('./config/db');
 
 const PORT = process.env.PORT || 5000;
 
@@ -20,3 +20,5 @@ const server = app.listen(PORT, () => {
 process.on('unhandledRejection', (err) => {
   console.error(`Unhandled Rejection Error: ${err.message}`);
 });
+
+module.exports = server;
