@@ -56,7 +56,100 @@ const validateLogin = (req, res, next) => {
   next();
 };
 
+/**
+ * Validates self profile update payload.
+ */
+const validateProfileUpdate = (req, res, next) => {
+  const { bio, name } = req.body;
+  const errors = [];
+
+  if (bio && typeof bio === 'string' && bio.length > 500) {
+    errors.push('Bio cannot exceed 500 characters.');
+  }
+
+  if (name !== undefined && (typeof name !== 'string' || name.trim().length < 2)) {
+    errors.push('Name must be at least 2 characters long.');
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({
+      success: false,
+      message: 'Validation failed',
+      errors
+    });
+  }
+
+  next();
+};
+
+/**
+ * Validates HR employee creation payload.
+ */
+const validateEmployeeCreate = (req, res, next) => {
+  const { name, email, role, salary } = req.body;
+  const errors = [];
+
+  if (!name || typeof name !== 'string' || name.trim().length < 2) {
+    errors.push('Name is required and must be at least 2 characters long.');
+  }
+
+  if (!email || typeof email !== 'string' || !emailRegex.test(email.trim())) {
+    errors.push('A valid email address is required.');
+  }
+
+  if (role && !['employee', 'manager', 'hr'].includes(role.toLowerCase())) {
+    errors.push("Role must be 'employee', 'manager', or 'hr'.");
+  }
+
+  if (salary !== undefined && (isNaN(Number(salary)) || Number(salary) < 0)) {
+    errors.push('Salary must be a non-negative number.');
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({
+      success: false,
+      message: 'Validation failed',
+      errors
+    });
+  }
+
+  next();
+};
+
+/**
+ * Validates HR employee update payload.
+ */
+const validateEmployeeUpdate = (req, res, next) => {
+  const { role, salary, name } = req.body;
+  const errors = [];
+
+  if (name !== undefined && (typeof name !== 'string' || name.trim().length < 2)) {
+    errors.push('Name must be at least 2 characters long.');
+  }
+
+  if (role && !['employee', 'manager', 'hr'].includes(role.toLowerCase())) {
+    errors.push("Role must be 'employee', 'manager', or 'hr'.");
+  }
+
+  if (salary !== undefined && (isNaN(Number(salary)) || Number(salary) < 0)) {
+    errors.push('Salary must be a non-negative number.');
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({
+      success: false,
+      message: 'Validation failed',
+      errors
+    });
+  }
+
+  next();
+};
+
 module.exports = {
   validateRegister,
-  validateLogin
+  validateLogin,
+  validateProfileUpdate,
+  validateEmployeeCreate,
+  validateEmployeeUpdate
 };

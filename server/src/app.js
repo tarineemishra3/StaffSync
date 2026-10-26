@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/auth.routes');
+const profileRoutes = require('./routes/profile.routes');
+const employeeRoutes = require('./routes/employee.routes');
 const { errorHandler } = require('./middleware/error.middleware');
 
 const app = express();
@@ -37,6 +39,8 @@ app.get('/api/health', (req, res) => {
 
 // Feature Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/employees', employeeRoutes);
 
 // 404 Handler for undefined routes
 app.use((req, res, next) => {
