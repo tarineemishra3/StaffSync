@@ -22,7 +22,7 @@ const validateRegister = (req, res, next) => {
   if (errors.length > 0) {
     return res.status(400).json({
       success: false,
-      message: 'Validation failed',
+      message: errors.join('. '),
       errors
     });
   }
@@ -48,7 +48,7 @@ const validateLogin = (req, res, next) => {
   if (errors.length > 0) {
     return res.status(400).json({
       success: false,
-      message: 'Validation failed',
+      message: errors.join('. '),
       errors
     });
   }
@@ -74,7 +74,7 @@ const validateProfileUpdate = (req, res, next) => {
   if (errors.length > 0) {
     return res.status(400).json({
       success: false,
-      message: 'Validation failed',
+      message: errors.join('. '),
       errors
     });
   }
@@ -108,7 +108,7 @@ const validateEmployeeCreate = (req, res, next) => {
   if (errors.length > 0) {
     return res.status(400).json({
       success: false,
-      message: 'Validation failed',
+      message: errors.join('. '),
       errors
     });
   }
@@ -138,7 +138,63 @@ const validateEmployeeUpdate = (req, res, next) => {
   if (errors.length > 0) {
     return res.status(400).json({
       success: false,
-      message: 'Validation failed',
+      message: errors.join('. '),
+      errors
+    });
+  }
+
+  next();
+};
+
+/**
+ * Validates leave application payload.
+ */
+const validateLeaveApply = (req, res, next) => {
+  const { leaveType, startDate, endDate, reason } = req.body;
+  const errors = [];
+
+  if (leaveType && !['casual', 'sick', 'annual', 'unpaid'].includes(leaveType.toLowerCase())) {
+    errors.push("Leave type must be 'casual', 'sick', 'annual', or 'unpaid'.");
+  }
+
+  if (!startDate) {
+    errors.push('Start date is required.');
+  }
+
+  if (!endDate) {
+    errors.push('End date is required.');
+  }
+
+  if (!reason || typeof reason !== 'string' || reason.trim().length < 5) {
+    errors.push('Reason is required and must be at least 5 characters long.');
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({
+      success: false,
+      message: errors.join('. '),
+      errors
+    });
+  }
+
+  next();
+};
+
+/**
+ * Validates leave review decision payload.
+ */
+const validateLeaveReview = (req, res, next) => {
+  const { status } = req.body;
+  const errors = [];
+
+  if (!status || !['approved', 'rejected'].includes(status.toLowerCase())) {
+    errors.push("Review decision status must be 'approved' or 'rejected'.");
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).json({
+      success: false,
+      message: errors.join('. '),
       errors
     });
   }
@@ -151,5 +207,7 @@ module.exports = {
   validateLogin,
   validateProfileUpdate,
   validateEmployeeCreate,
-  validateEmployeeUpdate
+  validateEmployeeUpdate,
+  validateLeaveApply,
+  validateLeaveReview
 };
