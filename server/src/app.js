@@ -5,6 +5,7 @@ const profileRoutes = require('./routes/profile.routes');
 const employeeRoutes = require('./routes/employee.routes');
 const attendanceRoutes = require('./routes/attendance.routes');
 const leaveRoutes = require('./routes/leave.routes');
+const announcementRoutes = require('./routes/announcement.routes');
 const { errorHandler } = require('./middleware/error.middleware');
 
 const app = express();
@@ -45,6 +46,7 @@ app.use('/api/profile', profileRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/leaves', leaveRoutes);
+app.use('/api/announcements', announcementRoutes);
 
 // 404 Handler for undefined routes
 app.use((req, res, next) => {

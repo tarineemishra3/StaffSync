@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { attendanceAPI } from '../api/index.js';
 
-function AttendanceView({ token, apiBaseUrl }) {
+function AttendanceView({ token }) {
   const [todayStatus, setTodayStatus] = useState(null);
   const [history, setHistory] = useState([]);
   const [summary, setSummary] = useState(null);
@@ -11,13 +12,8 @@ function AttendanceView({ token, apiBaseUrl }) {
 
   const fetchToday = async () => {
     try {
-      const res = await fetch(`${apiBaseUrl}/attendance/today`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      if (data.success) {
-        setTodayStatus(data);
-      }
+      const res = await attendanceAPI.getToday();
+      if (res.data.success) setTodayStatus(res.data);
     } catch (err) {
       console.error('Error fetching today attendance:', err);
     }
@@ -25,13 +21,10 @@ function AttendanceView({ token, apiBaseUrl }) {
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch(`${apiBaseUrl}/attendance/me?limit=15`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      if (data.success) {
-        setHistory(data.records || []);
-        setSummary(data.summary || null);
+      const res = await attendanceAPI.getMine({ limit: 15 });
+      if (res.data.success) {
+        setHistory(res.data.records || []);
+        setSummary(res.data.summary || null);
       }
     } catch (err) {
       console.error('Error fetching history:', err);
@@ -39,33 +32,22 @@ function AttendanceView({ token, apiBaseUrl }) {
   };
 
   useEffect(() => {
-    if (token) {
-      fetchToday();
-      fetchHistory();
-    }
-  }, [token]);
+    fetchToday();
+    fetchHistory();
+  }, []);
 
   const handleCheckIn = async () => {
     setLoading(true);
     setError(null);
     setMessage(null);
     try {
-      const res = await fetch(`${apiBaseUrl}/attendance/check-in`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ remarks })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Check-in failed');
-      setMessage(data.message);
+      const res = await attendanceAPI.checkIn(remarks);
+      setMessage(res.data.message);
       setRemarks('');
       await fetchToday();
       await fetchHistory();
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || 'Check-in failed');
     } finally {
       setLoading(false);
     }
@@ -76,22 +58,13 @@ function AttendanceView({ token, apiBaseUrl }) {
     setError(null);
     setMessage(null);
     try {
-      const res = await fetch(`${apiBaseUrl}/attendance/check-out`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ remarks })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Check-out failed');
-      setMessage(data.message);
+      const res = await attendanceAPI.checkOut(remarks);
+      setMessage(res.data.message);
       setRemarks('');
       await fetchToday();
       await fetchHistory();
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || 'Check-out failed');
     } finally {
       setLoading(false);
     }
@@ -99,17 +72,26 @@ function AttendanceView({ token, apiBaseUrl }) {
 
   return (
     <div className="attendance-container">
-      {message && <div className="alert alert-success alert-dismissible fade show">{message}</div>}
-      {error && <div className="alert alert-danger alert-dismissible fade show">{error}</div>}
+      {message && (
+        <div className="alert alert-success alert-dismissible fade show">
+          <i className="bi bi-check-circle me-2" />{message}
+          <button className="btn-close" onClick={() => setMessage(null)} />
+        </div>
+      )}
+      {error && (
+        <div className="alert alert-danger alert-dismissible fade show">
+          <i className="bi bi-exclamation-triangle me-2" />{error}
+          <button className="btn-close" onClick={() => setError(null)} />
+        </div>
+      )}
 
       <div className="row g-4 mb-4">
         {/* Today's Punch Card */}
         <div className="col-12 col-md-6">
-          <div className="card h-100 shadow-sm border-0">
+          <div className="card h-100 shadow-sm border-0" style={{ borderRadius: 12 }}>
             <div className="card-header bg-white border-bottom py-3">
               <h5 className="mb-0 fw-bold text-primary">
-                <i className="bi bi-clock-history me-2"></i>
-                Today's Work Shift
+                <i className="bi bi-clock-history me-2" />Today's Work Shift
               </h5>
             </div>
             <div className="card-body">
@@ -163,7 +145,7 @@ function AttendanceView({ token, apiBaseUrl }) {
                     onClick={handleCheckIn}
                     disabled={loading || todayStatus?.hasCheckedIn}
                   >
-                    <i className="bi bi-box-arrow-in-right me-1"></i>
+                    <i className="bi bi-box-arrow-in-right me-1" />
                     {todayStatus?.hasCheckedIn ? 'Checked In' : 'Check In'}
                   </button>
                   <button
@@ -171,7 +153,7 @@ function AttendanceView({ token, apiBaseUrl }) {
                     onClick={handleCheckOut}
                     disabled={loading || !todayStatus?.hasCheckedIn || todayStatus?.hasCheckedOut}
                   >
-                    <i className="bi bi-box-arrow-right me-1"></i>
+                    <i className="bi bi-box-arrow-right me-1" />
                     {todayStatus?.hasCheckedOut ? 'Checked Out' : 'Check Out'}
                   </button>
                 </div>
@@ -182,11 +164,10 @@ function AttendanceView({ token, apiBaseUrl }) {
 
         {/* Attendance Summary */}
         <div className="col-12 col-md-6">
-          <div className="card h-100 shadow-sm border-0">
+          <div className="card h-100 shadow-sm border-0" style={{ borderRadius: 12 }}>
             <div className="card-header bg-white border-bottom py-3">
               <h5 className="mb-0 fw-bold text-secondary">
-                <i className="bi bi-pie-chart-fill me-2"></i>
-                Monthly Summary
+                <i className="bi bi-pie-chart-fill me-2" />Monthly Summary
               </h5>
             </div>
             <div className="card-body">
@@ -226,11 +207,11 @@ function AttendanceView({ token, apiBaseUrl }) {
       </div>
 
       {/* History Table */}
-      <div className="card shadow-sm border-0">
+      <div className="card shadow-sm border-0" style={{ borderRadius: 12 }}>
         <div className="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
           <h5 className="mb-0 fw-bold">Recent Attendance Records</h5>
           <button className="btn btn-sm btn-outline-secondary" onClick={fetchHistory}>
-            <i className="bi bi-arrow-clockwise me-1"></i> Refresh
+            <i className="bi bi-arrow-clockwise me-1" /> Refresh
           </button>
         </div>
         <div className="card-body p-0">
@@ -252,20 +233,16 @@ function AttendanceView({ token, apiBaseUrl }) {
                     <tr key={rec._id}>
                       <td className="fw-semibold">{rec.date}</td>
                       <td>{new Date(rec.checkInTime).toLocaleTimeString()}</td>
-                      <td>
-                        {rec.checkOutTime ? new Date(rec.checkOutTime).toLocaleTimeString() : '—'}
-                      </td>
+                      <td>{rec.checkOutTime ? new Date(rec.checkOutTime).toLocaleTimeString() : '—'}</td>
                       <td>{rec.totalHours ? `${rec.totalHours} hrs` : 'In progress'}</td>
                       <td>
-                        <span
-                          className={`badge ${
-                            rec.status === 'present'
-                              ? 'bg-success'
-                              : rec.status === 'half-day'
-                              ? 'bg-warning text-dark'
-                              : 'bg-secondary'
-                          }`}
-                        >
+                        <span className={`badge ${
+                          rec.status === 'present'
+                            ? 'bg-success'
+                            : rec.status === 'half-day'
+                            ? 'bg-warning text-dark'
+                            : 'bg-secondary'
+                        }`}>
                           {rec.status}
                         </span>
                       </td>
@@ -275,6 +252,7 @@ function AttendanceView({ token, apiBaseUrl }) {
                 ) : (
                   <tr>
                     <td colSpan="6" className="text-center text-muted py-4">
+                      <i className="bi bi-clock d-block mb-2 fs-4 opacity-25" />
                       No attendance records found. Check in above to create your first record!
                     </td>
                   </tr>
