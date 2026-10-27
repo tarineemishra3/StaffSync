@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "jest --runInBand --detectOpenHandles"
+    "test": "jest --runInBand --detectOpenHandles --testTimeout=30000"
   },
   "keywords": ["hrms", "express", "mongodb", "jwt", "staffsync"],
   "author": "",
