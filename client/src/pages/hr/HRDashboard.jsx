@@ -230,44 +230,54 @@ export default function HRDashboard() {
     <div>
       {/* ─── Executive HR Administration Banner ─── */}
       <div
-        className="card border-0 text-white shadow-sm mb-4"
+        className="card border-0 shadow-sm mb-4"
         style={{
-          background: 'linear-gradient(135deg, #1e1b4b 0%, #4c1d95 60%, #7c3aed 100%)',
-          borderRadius: '16px'
+          background: '#F2ECFF',
+          borderRadius: '14px',
+          border: '1px solid #e2d5fa'
         }}
       >
         <div className="card-body p-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
           <div className="d-flex align-items-center gap-3">
             <div
-              className="rounded-circle d-flex align-items-center justify-content-center text-purple bg-white shadow fw-bold fs-3"
-              style={{ width: 62, height: 62, color: '#7c3aed' }}
+              className="rounded-circle d-flex align-items-center justify-content-center shadow-sm fw-bold fs-4"
+              style={{ width: 52, height: 52, background: '#ffffff', color: '#4B3280', border: '2px solid #d9c8f8' }}
             >
               <i className="bi bi-shield-lock-fill" />
             </div>
             <div>
               <div className="d-flex align-items-center gap-2 flex-wrap">
-                <h4 className="fw-bold mb-0 text-white">Enterprise HR Administration Suite</h4>
-                <span className="badge bg-purple text-white fw-semibold px-2 py-1" style={{ backgroundColor: '#9333ea' }}>
+                <h4 className="fw-bold mb-0" style={{ color: '#4B3280' }}>Enterprise HR Administration Suite</h4>
+                <span className="badge fw-semibold px-2 py-1" style={{ background: '#e5d7fc', color: '#4B3280', border: '1px solid #d4bef7' }}>
                   Global Governance
                 </span>
               </div>
-              <p className="mb-0 text-white-50 small mt-1">
+              <p className="mb-0 small mt-1" style={{ color: '#614896' }}>
                 Company-wide workforce oversight · Total Staff: <strong>{stats.employees}</strong> · Active: <strong>{stats.active}</strong> · Presence: <strong>{stats.presentToday} checked in</strong>
               </p>
             </div>
           </div>
 
           <div className="d-flex gap-2 flex-wrap">
-            <Link to="/hr/employees/add" className="btn btn-light btn-sm fw-semibold text-purple d-flex align-items-center gap-1 shadow-sm">
+            <Link
+              to="/hr/employees/add"
+              className="btn btn-sm fw-semibold d-flex align-items-center gap-1 shadow-sm"
+              style={{ background: '#4B3280', color: '#ffffff', border: '1px solid #4B3280' }}
+            >
               <i className="bi bi-person-plus-fill" /> Add New Staff
             </Link>
             <button
-              className="btn btn-outline-light btn-sm d-flex align-items-center gap-1"
+              className="btn btn-sm d-flex align-items-center gap-1 fw-semibold"
+              style={{ background: '#ffffff', color: '#4B3280', border: '1px solid #d4c2f6' }}
               onClick={() => setActiveTab('broadcast')}
             >
               <i className="bi bi-broadcast" /> Broadcast Notice
             </button>
-            <Link to="/hr/attendance" className="btn btn-outline-light btn-sm d-flex align-items-center gap-1">
+            <Link
+              to="/hr/attendance"
+              className="btn btn-sm d-flex align-items-center gap-1 fw-semibold"
+              style={{ background: 'transparent', color: '#4B3280', border: '1px solid #4B3280' }}
+            >
               <i className="bi bi-file-earmark-bar-graph" /> Attendance Report
             </Link>
           </div>
@@ -291,60 +301,60 @@ export default function HRDashboard() {
       {/* ─── Executive KPI Ribbon ─── */}
       <div className="row g-3 mb-4">
         <div className="col-6 col-lg-3">
-          <div className="card border-0 shadow-sm p-3 h-100" style={{ borderRadius: 12, borderLeft: '4px solid #7c3aed' }}>
+          <div className="card border shadow-sm px-3 py-2 h-100" style={{ borderRadius: 10, borderColor: '#e9ecef', borderLeft: '3px solid #7c3aed' }}>
             <div className="d-flex align-items-center justify-content-between">
               <div>
-                <span className="small text-muted d-block">Total Workforce</span>
-                <span className="fs-2 fw-bold text-dark">{loading ? '…' : stats.employees}</span>
-                <span className="small text-muted d-block">{stats.active} active · {stats.inactive} inactive</span>
+                <span className="small text-muted d-block" style={{ fontSize: '0.75rem' }}>Total Workforce</span>
+                <span className="fs-4 fw-bold text-dark lh-1">{loading ? '…' : stats.employees}</span>
+                <span className="small text-muted d-block" style={{ fontSize: '0.72rem' }}>{stats.active} active · {stats.inactive} inactive</span>
               </div>
-              <div className="p-3 bg-purple-subtle text-purple rounded-circle">
-                <i className="bi bi-people-fill fs-4" />
+              <div className="d-flex align-items-center justify-content-center bg-purple-subtle text-purple rounded-circle" style={{ width: 36, height: 36 }}>
+                <i className="bi bi-people-fill fs-5" />
               </div>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-lg-3">
-          <div className="card border-0 shadow-sm p-3 h-100" style={{ borderRadius: 12, borderLeft: '4px solid #16a34a' }}>
+          <div className="card border shadow-sm px-3 py-2 h-100" style={{ borderRadius: 10, borderColor: '#e9ecef', borderLeft: '3px solid #16a34a' }}>
             <div className="d-flex align-items-center justify-content-between">
               <div>
-                <span className="small text-muted d-block">Present Today</span>
-                <span className="fs-2 fw-bold text-success">{loading ? '…' : stats.presentToday}</span>
-                <span className="small text-muted d-block">{attendanceRate}% organization rate</span>
+                <span className="small text-muted d-block" style={{ fontSize: '0.75rem' }}>Present Today</span>
+                <span className="fs-4 fw-bold text-success lh-1">{loading ? '…' : stats.presentToday}</span>
+                <span className="small text-muted d-block" style={{ fontSize: '0.72rem' }}>{attendanceRate}% organization rate</span>
               </div>
-              <div className="p-3 bg-success-subtle text-success rounded-circle">
-                <i className="bi bi-clock-history fs-4" />
+              <div className="d-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle" style={{ width: 36, height: 36 }}>
+                <i className="bi bi-clock-history fs-5" />
               </div>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-lg-3">
-          <div className="card border-0 shadow-sm p-3 h-100" style={{ borderRadius: 12, borderLeft: '4px solid #d97706' }}>
+          <div className="card border shadow-sm px-3 py-2 h-100" style={{ borderRadius: 10, borderColor: '#e9ecef', borderLeft: '3px solid #d97706' }}>
             <div className="d-flex align-items-center justify-content-between">
               <div>
-                <span className="small text-muted d-block">Pending Leaves</span>
-                <span className="fs-2 fw-bold text-warning-emphasis">{loading ? '…' : stats.pendingLeaves}</span>
-                <span className="small text-muted d-block">company-wide queue</span>
+                <span className="small text-muted d-block" style={{ fontSize: '0.75rem' }}>Pending Leaves</span>
+                <span className="fs-4 fw-bold text-warning-emphasis lh-1">{loading ? '…' : stats.pendingLeaves}</span>
+                <span className="small text-muted d-block" style={{ fontSize: '0.72rem' }}>company-wide queue</span>
               </div>
-              <div className="p-3 bg-warning-subtle text-warning-emphasis rounded-circle">
-                <i className="bi bi-calendar2-x fs-4" />
+              <div className="d-flex align-items-center justify-content-center bg-warning-subtle text-warning-emphasis rounded-circle" style={{ width: 36, height: 36 }}>
+                <i className="bi bi-calendar2-x fs-5" />
               </div>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-lg-3">
-          <div className="card border-0 shadow-sm p-3 h-100" style={{ borderRadius: 12, borderLeft: '4px solid #0284c7' }}>
+          <div className="card border shadow-sm px-3 py-2 h-100" style={{ borderRadius: 10, borderColor: '#e9ecef', borderLeft: '3px solid #0284c7' }}>
             <div className="d-flex align-items-center justify-content-between">
               <div>
-                <span className="small text-muted d-block">Managers &amp; Leads</span>
-                <span className="fs-2 fw-bold text-primary">{loading ? '…' : stats.managers}</span>
-                <span className="small text-muted d-block">department leaders</span>
+                <span className="small text-muted d-block" style={{ fontSize: '0.75rem' }}>Managers &amp; Leads</span>
+                <span className="fs-4 fw-bold text-primary lh-1">{loading ? '…' : stats.managers}</span>
+                <span className="small text-muted d-block" style={{ fontSize: '0.72rem' }}>department leaders</span>
               </div>
-              <div className="p-3 bg-primary-subtle text-primary rounded-circle">
-                <i className="bi bi-briefcase-fill fs-4" />
+              <div className="d-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style={{ width: 36, height: 36 }}>
+                <i className="bi bi-briefcase-fill fs-5" />
               </div>
             </div>
           </div>

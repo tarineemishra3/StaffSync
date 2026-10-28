@@ -124,28 +124,29 @@ export default function ManagerDashboard() {
     <div>
       {/* ─── Manager Operations Command Banner ─── */}
       <div
-        className="card border-0 text-white shadow-sm mb-4"
+        className="card border-0 shadow-sm mb-4"
         style={{
-          background: 'linear-gradient(135deg, #042f2e 0%, #064e3b 50%, #059669 100%)',
-          borderRadius: '16px'
+          background: '#EAF7EE',
+          borderRadius: '14px',
+          border: '1px solid #d2eed9'
         }}
       >
         <div className="card-body p-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
           <div className="d-flex align-items-center gap-3">
             <div
-              className="rounded-circle d-flex align-items-center justify-content-center text-emerald bg-white shadow fw-bold fs-3"
-              style={{ width: 62, height: 62, color: '#059669' }}
+              className="rounded-circle d-flex align-items-center justify-content-center shadow-sm fw-bold fs-4"
+              style={{ width: 52, height: 52, background: '#ffffff', color: '#245C3B', border: '2px solid #c2e8cb' }}
             >
               <i className="bi bi-briefcase-fill" />
             </div>
             <div>
               <div className="d-flex align-items-center gap-2 flex-wrap">
-                <h4 className="fw-bold mb-0 text-white">Team Leadership &amp; Operations Center</h4>
-                <span className="badge bg-emerald text-white fw-semibold px-2 py-1">
+                <h4 className="fw-bold mb-0" style={{ color: '#245C3B' }}>Team Leadership &amp; Operations Center</h4>
+                <span className="badge fw-semibold px-2 py-1" style={{ background: '#d7f0df', color: '#245C3B', border: '1px solid #bfe7cc' }}>
                   Manager Hub
                 </span>
               </div>
-              <p className="mb-0 text-white-50 small mt-1">
+              <p className="mb-0 small mt-1" style={{ color: '#386c4c' }}>
                 Lead: <strong>{user?.name}</strong> · Direct Reports: <strong>{teamCount} members</strong> · Shift Compliance: <strong>{attendanceRate}% Present</strong>
               </p>
             </div>
@@ -153,16 +154,21 @@ export default function ManagerDashboard() {
 
           <div className="d-flex gap-2">
             <button
-              className="btn btn-light btn-sm fw-semibold text-emerald d-flex align-items-center gap-1 shadow-sm"
+              className="btn btn-sm fw-semibold d-flex align-items-center gap-1 shadow-sm"
+              style={{ background: '#ffffff', color: '#245C3B', border: '1px solid #c0e5cb' }}
               onClick={() => setActiveTab('approvals')}
             >
-              <i className="bi bi-calendar2-check-fill text-emerald" />
+              <i className="bi bi-calendar2-check-fill" style={{ color: '#245C3B' }} />
               Approvals Queue
               {pendingLeaves.length > 0 && (
                 <span className="badge bg-danger ms-1">{pendingLeaves.length}</span>
               )}
             </button>
-            <Link to="/manager/team" className="btn btn-outline-light btn-sm d-flex align-items-center gap-1">
+            <Link
+              to="/manager/team"
+              className="btn btn-sm d-flex align-items-center gap-1 fw-semibold"
+              style={{ background: 'transparent', color: '#245C3B', border: '1px solid #245C3B' }}
+            >
               <i className="bi bi-people" /> Roster
             </Link>
           </div>
@@ -186,45 +192,45 @@ export default function ManagerDashboard() {
       {/* ─── Operations KPI Strip ─── */}
       <div className="row g-3 mb-4">
         <div className="col-6 col-md-3">
-          <div className="card border-0 shadow-sm p-3 h-100" style={{ borderRadius: '12px', borderLeft: '4px solid #059669' }}>
+          <div className="card border shadow-sm px-3 py-2 h-100" style={{ borderRadius: 10, borderColor: '#e9ecef', borderLeft: '3px solid #059669' }}>
             <div className="d-flex justify-content-between align-items-center">
               <div>
-                <span className="text-muted small d-block">Team Size</span>
-                <span className="fs-2 fw-bold text-dark">{loading ? '…' : teamCount}</span>
-                <span className="text-muted small d-block">direct reports</span>
+                <span className="text-muted d-block" style={{ fontSize: '0.75rem' }}>Team Size</span>
+                <span className="fs-4 fw-bold text-dark lh-1">{loading ? '…' : teamCount}</span>
+                <span className="text-muted d-block" style={{ fontSize: '0.72rem' }}>direct reports</span>
               </div>
-              <div className="p-3 bg-emerald bg-opacity-10 rounded-circle text-emerald">
-                <i className="bi bi-people-fill fs-4" style={{ color: '#059669' }} />
+              <div className="d-flex align-items-center justify-content-center bg-emerald bg-opacity-10 rounded-circle text-emerald" style={{ width: 36, height: 36 }}>
+                <i className="bi bi-people-fill fs-5" style={{ color: '#059669' }} />
               </div>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-md-3">
-          <div className="card border-0 shadow-sm p-3 h-100" style={{ borderRadius: '12px', borderLeft: '4px solid #16a34a' }}>
+          <div className="card border shadow-sm px-3 py-2 h-100" style={{ borderRadius: 10, borderColor: '#e9ecef', borderLeft: '3px solid #16a34a' }}>
             <div className="d-flex justify-content-between align-items-center">
               <div>
-                <span className="text-muted small d-block">Clocked In Today</span>
-                <span className="fs-2 fw-bold text-success">{loading ? '…' : presentCount}</span>
-                <span className="text-muted small d-block">on active duty</span>
+                <span className="text-muted d-block" style={{ fontSize: '0.75rem' }}>Clocked In Today</span>
+                <span className="fs-4 fw-bold text-success lh-1">{loading ? '…' : presentCount}</span>
+                <span className="text-muted d-block" style={{ fontSize: '0.72rem' }}>on active duty</span>
               </div>
-              <div className="p-3 bg-success-subtle rounded-circle text-success">
-                <i className="bi bi-person-check-fill fs-4" />
+              <div className="d-flex align-items-center justify-content-center bg-success-subtle rounded-circle text-success" style={{ width: 36, height: 36 }}>
+                <i className="bi bi-person-check-fill fs-5" />
               </div>
             </div>
           </div>
         </div>
 
         <div className="col-6 col-md-3">
-          <div className="card border-0 shadow-sm p-3 h-100" style={{ borderRadius: '12px', borderLeft: '4px solid #64748b' }}>
+          <div className="card border shadow-sm px-3 py-2 h-100" style={{ borderRadius: 10, borderColor: '#e9ecef', borderLeft: '3px solid #64748b' }}>
             <div className="d-flex justify-content-between align-items-center">
               <div>
-                <span className="text-muted small d-block">Not Clocked In</span>
-                <span className="fs-2 fw-bold text-secondary">{loading ? '…' : absentCount}</span>
-                <span className="text-muted small d-block">absent or off</span>
+                <span className="text-muted d-block" style={{ fontSize: '0.75rem' }}>Not Clocked In</span>
+                <span className="fs-4 fw-bold text-secondary lh-1">{loading ? '…' : absentCount}</span>
+                <span className="text-muted d-block" style={{ fontSize: '0.72rem' }}>absent or off</span>
               </div>
-              <div className="p-3 bg-secondary-subtle rounded-circle text-secondary">
-                <i className="bi bi-person-x-fill fs-4" />
+              <div className="d-flex align-items-center justify-content-center bg-secondary-subtle rounded-circle text-secondary" style={{ width: 36, height: 36 }}>
+                <i className="bi bi-person-x-fill fs-5" />
               </div>
             </div>
           </div>
@@ -232,17 +238,17 @@ export default function ManagerDashboard() {
 
         <div className="col-6 col-md-3">
           <div
-            className={`card border-0 shadow-sm p-3 h-100 ${pendingLeaves.length > 0 ? 'bg-warning-subtle border-warning' : ''}`}
-            style={{ borderRadius: '12px', borderLeft: '4px solid #f59e0b' }}
+            className={`card border shadow-sm px-3 py-2 h-100 ${pendingLeaves.length > 0 ? 'bg-warning-subtle border-warning' : ''}`}
+            style={{ borderRadius: 10, borderColor: '#e9ecef', borderLeft: '3px solid #f59e0b' }}
           >
             <div className="d-flex justify-content-between align-items-center">
               <div>
-                <span className="text-muted small d-block">Pending Approvals</span>
-                <span className="fs-2 fw-bold text-warning-emphasis">{loading ? '…' : pendingLeaves.length}</span>
-                <span className="text-muted small d-block">action required</span>
+                <span className="text-muted d-block" style={{ fontSize: '0.75rem' }}>Pending Approvals</span>
+                <span className="fs-4 fw-bold text-warning-emphasis lh-1">{loading ? '…' : pendingLeaves.length}</span>
+                <span className="text-muted d-block" style={{ fontSize: '0.72rem' }}>action required</span>
               </div>
-              <div className="p-3 bg-warning bg-opacity-25 rounded-circle text-warning-emphasis">
-                <i className="bi bi-hourglass-bottom fs-4" />
+              <div className="d-flex align-items-center justify-content-center bg-warning bg-opacity-25 rounded-circle text-warning-emphasis" style={{ width: 36, height: 36 }}>
+                <i className="bi bi-hourglass-bottom fs-5" />
               </div>
             </div>
           </div>

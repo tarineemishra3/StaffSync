@@ -226,41 +226,42 @@ export default function EmployeeDashboard() {
     <div>
       {/* ─── Hero Workplace Greeting Banner ─── */}
       <div
-        className="card border-0 text-white shadow-sm mb-4"
+        className="card border-0 shadow-sm mb-4"
         style={{
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #06b6d4 100%)',
-          borderRadius: '16px'
+          background: '#EAF3FF',
+          borderRadius: '14px',
+          border: '1px solid #d4e5fa'
         }}
       >
         <div className="card-body p-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
           <div className="d-flex align-items-center gap-3">
             <div
-              className="rounded-circle d-flex align-items-center justify-content-center text-primary bg-white shadow fw-bold fs-3"
-              style={{ width: 62, height: 62 }}
+              className="rounded-circle d-flex align-items-center justify-content-center shadow-sm fw-bold fs-4"
+              style={{ width: 52, height: 52, background: '#ffffff', color: '#244A78', border: '2px solid #cce0fa' }}
             >
               {user?.name?.[0]?.toUpperCase() || 'E'}
             </div>
             <div>
               <div className="d-flex align-items-center gap-2 flex-wrap">
-                <h4 className="fw-bold mb-0 text-white">Welcome back, {user?.name}!</h4>
-                <span className="badge bg-light text-primary fw-semibold px-2 py-1">
+                <h4 className="fw-bold mb-0" style={{ color: '#244A78' }}>Welcome back, {user?.name}!</h4>
+                <span className="badge fw-semibold px-2 py-1" style={{ background: '#dcebff', color: '#244A78', border: '1px solid #c5ddfc' }}>
                   Employee Self-Service
                 </span>
               </div>
-              <p className="mb-0 text-white-50 small mt-1">
+              <p className="mb-0 small mt-1" style={{ color: '#3b628c' }}>
                 {profile?.designation || 'Staff Member'} · {profile?.department || 'General Department'} · ID: {profile?.employeeId || 'SS-EMP'}
               </p>
             </div>
           </div>
 
           {/* Live Digital Clock Widget */}
-          <div className="d-flex align-items-center gap-2 bg-black bg-opacity-25 px-3 py-2 rounded-3 border border-white border-opacity-20">
-            <i className="bi bi-clock-history fs-4 text-cyan" style={{ color: '#67e8f9' }} />
+          <div className="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style={{ background: '#ffffff', border: '1px solid #d0e2fa', boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
+            <i className="bi bi-clock-history fs-5" style={{ color: '#244A78' }} />
             <div className="text-end">
-              <div className="fs-5 fw-bold text-white lh-1 font-monospace">
+              <div className="fs-6 fw-bold lh-1 font-monospace" style={{ color: '#244A78' }}>
                 {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
               </div>
-              <div className="text-white-50" style={{ fontSize: '0.72rem' }}>
+              <div style={{ color: '#5a789c', fontSize: '0.72rem' }}>
                 {currentTime.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })}
               </div>
             </div>
@@ -402,45 +403,45 @@ export default function EmployeeDashboard() {
 
         {/* Attendance Month-to-Date Performance */}
         <div className="col-12 col-lg-5">
-          <div className="card border-0 shadow-sm h-100" style={{ borderRadius: '14px' }}>
-            <div className="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
-              <h6 className="fw-bold mb-0">
+          <div className="card border shadow-sm h-100" style={{ borderRadius: '12px', borderColor: '#e9ecef' }}>
+            <div className="card-header bg-white border-bottom py-2 px-3 d-flex justify-content-between align-items-center">
+              <h6 className="fw-bold mb-0 small">
                 <i className="bi bi-bar-chart-line text-success me-2" />
                 Monthly Attendance Performance
               </h6>
-              <Link to="/attendance" className="btn btn-sm btn-outline-primary">History</Link>
+              <Link to="/attendance" className="btn btn-sm btn-outline-primary py-0 px-2" style={{ fontSize: '0.8rem' }}>History</Link>
             </div>
-            <div className="card-body p-4 d-flex flex-column justify-content-around">
-              <div className="d-flex align-items-center justify-content-between border-bottom pb-3">
+            <div className="card-body p-3 d-flex flex-column justify-content-around">
+              <div className="d-flex align-items-center justify-content-between border-bottom pb-2 mb-2">
                 <div>
-                  <span className="text-muted small d-block">Days Present This Month</span>
-                  <span className="fs-3 fw-bold text-success">{summary?.totalPresent ?? 0}</span>
-                  <span className="text-muted small ms-1">workdays</span>
+                  <span className="text-muted d-block" style={{ fontSize: '0.75rem' }}>Days Present This Month</span>
+                  <span className="fs-4 fw-bold text-success lh-1">{summary?.totalPresent ?? 0}</span>
+                  <span className="text-muted ms-1" style={{ fontSize: '0.72rem' }}>workdays</span>
                 </div>
-                <div className="p-3 bg-success-subtle text-success rounded-circle">
-                  <i className="bi bi-calendar-check fs-4" />
+                <div className="d-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle" style={{ width: 36, height: 36 }}>
+                  <i className="bi bi-calendar-check fs-5" />
                 </div>
               </div>
 
-              <div className="d-flex align-items-center justify-content-between border-bottom py-3">
+              <div className="d-flex align-items-center justify-content-between border-bottom pb-2 mb-2">
                 <div>
-                  <span className="text-muted small d-block">Total Working Hours</span>
-                  <span className="fs-3 fw-bold text-primary">{summary?.totalWorkingHours ?? 0}h</span>
-                  <span className="text-muted small ms-1">logged</span>
+                  <span className="text-muted d-block" style={{ fontSize: '0.75rem' }}>Total Working Hours</span>
+                  <span className="fs-4 fw-bold text-primary lh-1">{summary?.totalWorkingHours ?? 0}h</span>
+                  <span className="text-muted ms-1" style={{ fontSize: '0.72rem' }}>logged</span>
                 </div>
-                <div className="p-3 bg-primary-subtle text-primary rounded-circle">
-                  <i className="bi bi-stopwatch fs-4" />
+                <div className="d-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle" style={{ width: 36, height: 36 }}>
+                  <i className="bi bi-stopwatch fs-5" />
                 </div>
               </div>
 
-              <div className="d-flex align-items-center justify-content-between pt-3">
+              <div className="d-flex align-items-center justify-content-between pt-1">
                 <div>
-                  <span className="text-muted small d-block">Active Leaves & Approvals</span>
-                  <span className="fs-3 fw-bold text-warning">{myLeaves.filter(l => l.status === 'pending').length}</span>
-                  <span className="text-muted small ms-1">pending</span>
+                  <span className="text-muted d-block" style={{ fontSize: '0.75rem' }}>Active Leaves & Approvals</span>
+                  <span className="fs-4 fw-bold text-warning-emphasis lh-1">{myLeaves.filter(l => l.status === 'pending').length}</span>
+                  <span className="text-muted ms-1" style={{ fontSize: '0.72rem' }}>pending</span>
                 </div>
-                <div className="p-3 bg-warning-subtle text-warning rounded-circle">
-                  <i className="bi bi-hourglass-split fs-4" />
+                <div className="d-flex align-items-center justify-content-center bg-warning-subtle text-warning-emphasis rounded-circle" style={{ width: 36, height: 36 }}>
+                  <i className="bi bi-hourglass-split fs-5" />
                 </div>
               </div>
             </div>
@@ -449,60 +450,61 @@ export default function EmployeeDashboard() {
       </div>
 
       {/* ─── Leave Balances Visual Strip ─── */}
-      <div className="card border-0 shadow-sm mb-4" style={{ borderRadius: '14px', background: '#ffffff' }}>
-        <div className="card-body p-4">
+      <div className="card border shadow-sm mb-4" style={{ borderRadius: '12px', background: '#ffffff', borderColor: '#e9ecef' }}>
+        <div className="card-body p-3">
           <div className="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
             <div>
               <h6 className="fw-bold mb-0">
                 <i className="bi bi-calendar-heart text-danger me-2" />
                 Leave Balances &amp; Time Off
               </h6>
-              <span className="text-muted small">Annual standard employee quota for calendar year 2026</span>
+              <span className="text-muted" style={{ fontSize: '0.75rem' }}>Annual standard employee quota for calendar year 2026</span>
             </div>
             <button
-              className="btn btn-primary btn-sm d-flex align-items-center gap-1 shadow-sm"
+              className="btn btn-primary btn-sm d-flex align-items-center gap-1 shadow-sm py-1 px-2"
+              style={{ fontSize: '0.8rem' }}
               onClick={() => setShowApplyModal(true)}
             >
               <i className="bi bi-plus-circle-fill" /> Apply for Leave
             </button>
           </div>
 
-          <div className="row g-3">
+          <div className="row g-2">
             <div className="col-6 col-md-3">
-              <div className="p-3 rounded-3 border h-100" style={{ background: '#f0fdf4', borderColor: '#bbf7d0' }}>
-                <span className="badge bg-success-subtle text-success small mb-1">Casual Leave</span>
-                <div className="fs-3 fw-bold text-success">{balances.casual} <span className="fs-6 text-muted fw-normal">/ 12 left</span></div>
-                <div className="progress mt-2" style={{ height: 6 }}>
+              <div className="p-2 px-3 rounded-3 border h-100" style={{ background: '#f0fdf4', borderColor: '#bbf7d0' }}>
+                <span className="badge bg-success-subtle text-success small mb-1" style={{ fontSize: '0.7rem' }}>Casual Leave</span>
+                <div className="fs-4 fw-bold text-success lh-1">{balances.casual} <span className="fs-6 text-muted fw-normal">/ 12 left</span></div>
+                <div className="progress mt-2" style={{ height: 4 }}>
                   <div className="progress-bar bg-success" style={{ width: `${(balances.casual / 12) * 100}%` }} />
                 </div>
               </div>
             </div>
 
             <div className="col-6 col-md-3">
-              <div className="p-3 rounded-3 border h-100" style={{ background: '#eff6ff', borderColor: '#bfdbfe' }}>
-                <span className="badge bg-primary-subtle text-primary small mb-1">Sick Leave</span>
-                <div className="fs-3 fw-bold text-primary">{balances.sick} <span className="fs-6 text-muted fw-normal">/ 10 left</span></div>
-                <div className="progress mt-2" style={{ height: 6 }}>
+              <div className="p-2 px-3 rounded-3 border h-100" style={{ background: '#eff6ff', borderColor: '#bfdbfe' }}>
+                <span className="badge bg-primary-subtle text-primary small mb-1" style={{ fontSize: '0.7rem' }}>Sick Leave</span>
+                <div className="fs-4 fw-bold text-primary lh-1">{balances.sick} <span className="fs-6 text-muted fw-normal">/ 10 left</span></div>
+                <div className="progress mt-2" style={{ height: 4 }}>
                   <div className="progress-bar bg-primary" style={{ width: `${(balances.sick / 10) * 100}%` }} />
                 </div>
               </div>
             </div>
 
             <div className="col-6 col-md-3">
-              <div className="p-3 rounded-3 border h-100" style={{ background: '#fdf4ff', borderColor: '#f5d0fe' }}>
-                <span className="badge bg-purple-subtle text-purple small mb-1">Annual Leave</span>
-                <div className="fs-3 fw-bold" style={{ color: '#9333ea' }}>{balances.annual} <span className="fs-6 text-muted fw-normal">/ 15 left</span></div>
-                <div className="progress mt-2" style={{ height: 6 }}>
+              <div className="p-2 px-3 rounded-3 border h-100" style={{ background: '#fdf4ff', borderColor: '#f5d0fe' }}>
+                <span className="badge bg-purple-subtle text-purple small mb-1" style={{ fontSize: '0.7rem' }}>Annual Leave</span>
+                <div className="fs-4 fw-bold lh-1" style={{ color: '#9333ea' }}>{balances.annual} <span className="fs-6 text-muted fw-normal">/ 15 left</span></div>
+                <div className="progress mt-2" style={{ height: 4 }}>
                   <div className="progress-bar bg-purple" style={{ width: `${(balances.annual / 15) * 100}%`, backgroundColor: '#9333ea' }} />
                 </div>
               </div>
             </div>
 
             <div className="col-6 col-md-3">
-              <div className="p-3 rounded-3 border h-100" style={{ background: '#f8fafc', borderColor: '#e2e8f0' }}>
-                <span className="badge bg-secondary-subtle text-secondary small mb-1">Pending Approval</span>
-                <div className="fs-3 fw-bold text-dark">{myLeaves.filter(l => l.status === 'pending').length} <span className="fs-6 text-muted fw-normal">requests</span></div>
-                <div className="small text-muted mt-2">
+              <div className="p-2 px-3 rounded-3 border h-100" style={{ background: '#f8fafc', borderColor: '#e2e8f0' }}>
+                <span className="badge bg-secondary-subtle text-secondary small mb-1" style={{ fontSize: '0.7rem' }}>Pending Approval</span>
+                <div className="fs-4 fw-bold text-dark lh-1">{myLeaves.filter(l => l.status === 'pending').length} <span className="fs-6 text-muted fw-normal">requests</span></div>
+                <div className="text-muted mt-2" style={{ fontSize: '0.72rem' }}>
                   <i className="bi bi-clock me-1" /> Awaiting review
                 </div>
               </div>
