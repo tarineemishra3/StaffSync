@@ -35,7 +35,8 @@ export const authAPI = {
   login: (email, password) => api.post('/auth/login', { email, password }),
   register: (name, email, password) => api.post('/auth/register', { name, email, password }),
   getMe: () => api.get('/auth/me'),
-  createUser: (data) => api.post('/auth/create-user', data)
+  createUser: (data) => api.post('/auth/create-user', data),
+  demoLogin: (role) => api.post('/auth/demo-login', { role })
 };
 
 // ─── Profile ─────────────────────────────────────────────────────────────────

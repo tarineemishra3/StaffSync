@@ -3,7 +3,8 @@ const {
   register,
   login,
   getMe,
-  createUser
+  createUser,
+  demoLogin
 } = require('../controllers/auth.controller');
 const {
   validateRegister,
@@ -17,6 +18,7 @@ const router = express.Router();
 // Public routes
 router.post('/register', validateRegister, register);
 router.post('/login', validateLogin, login);
+router.post('/demo-login', demoLogin);
 
 // Protected routes (any authenticated user)
 router.get('/me', protect, getMe);

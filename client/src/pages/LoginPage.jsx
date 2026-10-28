@@ -34,21 +34,15 @@ export default function LoginPage() {
   const handleQuickLogin = async (role) => {
     setLoading(true);
     setError('');
-    const demoEmail = `${role}.demo@staffsync.test`;
-    const demoPass = 'Password123!';
     try {
-      const user = await login(demoEmail, demoPass);
-      navigate(roleHome[user.role] || '/dashboard', { replace: true });
-    } catch {
-      // User doesn't exist yet — try registering
-      try {
-        const { authAPI } = await import('../api/index.js');
-        await authAPI.register(`${role.charAt(0).toUpperCase() + role.slice(1)} Demo`, demoEmail, demoPass);
-        const user = await login(demoEmail, demoPass);
-        navigate(roleHome[user.role] || '/dashboard', { replace: true });
-      } catch (err2) {
-        setError(err2.response?.data?.message || 'Demo login failed.');
-      }
+      const { authAPI } = await import('../api/index.js');
+      const res = await authAPI.demoLogin(role);
+      const { token: t, user: u } = res.data;
+      localStorage.setItem('staffsync_token', t);
+      // Force a full page reload so AuthContext picks up the new token and user
+      window.location.href = roleHome[u.role] || '/dashboard';
+    } catch (err) {
+      setError(err.response?.data?.message || 'Demo login failed. Please try again.');
     } finally {
       setLoading(false);
     }

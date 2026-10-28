@@ -146,9 +146,65 @@ const createUser = async (req, res, next) => {
   }
 };
 
+/**
+ * @desc    Demo login — find or create a demo account with the requested role
+ * @route   POST /api/auth/demo-login
+ * @access  Public (creates accounts scoped to @staffsync.demo domain only)
+ */
+const demoLogin = async (req, res, next) => {
+  try {
+    const { role } = req.body;
+    const allowedRoles = ['employee', 'manager', 'hr'];
+
+    if (!role || !allowedRoles.includes(role)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid demo role. Must be employee, manager, or hr.'
+      });
+    }
+
+    const demoEmail = `${role}.demo@staffsync.demo`;
+    const demoPassword = 'DemoPass123!';
+    const demoName = `${role.charAt(0).toUpperCase() + role.slice(1)} Demo`;
+
+    // Find existing demo user or create one with the correct role
+    let user = await User.findOne({ email: demoEmail });
+
+    if (!user) {
+      user = await User.create({
+        name: demoName,
+        email: demoEmail,
+        password: demoPassword,
+        role: role,       // <-- this is the key difference from register()
+        status: 'active'
+      });
+    } else if (user.role !== role) {
+      // If the demo user exists but somehow has the wrong role, fix it
+      user.role = role;
+      user.status = 'active';
+      await user.save();
+    } else if (user.status !== 'active') {
+      user.status = 'active';
+      await user.save();
+    }
+
+    const token = signToken(user);
+
+    res.status(200).json({
+      success: true,
+      message: `Demo login as ${role}`,
+      token,
+      user
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   register,
   login,
   getMe,
-  createUser
+  createUser,
+  demoLogin
 };
