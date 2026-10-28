@@ -1,5 +1,11 @@
+const path = require('path');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
+
+const localBinaryPath = path.join(__dirname, '../node_modules/.cache/mongodb-memory-server/mongod-x64-win32-7.0.24.exe');
+if (require('fs').existsSync(localBinaryPath)) {
+  process.env.MONGOMS_SYSTEM_BINARY = localBinaryPath;
+}
 
 let mongoServer;
 
