@@ -15,6 +15,7 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import AttendancePage from './pages/shared/AttendancePage.jsx';
 import LeavePage from './pages/shared/LeavePage.jsx';
 import AnnouncementsPage from './pages/shared/AnnouncementsPage.jsx';
+import TrainingPage from './pages/shared/TrainingPage.jsx';
 
 // Employee pages
 import EmployeeDashboard from './pages/employee/EmployeeDashboard.jsx';
@@ -44,6 +45,14 @@ function RootRedirect() {
   return <Navigate to={map[user.role] || '/dashboard'} replace />;
 }
 
+/** Dynamic role-tailored dashboard selector for /dashboard */
+function RoleDashboardRouter() {
+  const { user } = useAuth();
+  if (user?.role === 'manager') return <ManagerDashboard />;
+  if (user?.role === 'hr') return <HRDashboard />;
+  return <EmployeeDashboard />;
+}
+
 function AppRoutes() {
   return (
     <Routes>
@@ -54,12 +63,14 @@ function AppRoutes() {
       {/* Root → smart redirect */}
       <Route path="/" element={<RootRedirect />} />
 
-      {/* ── Employee routes ── */}
+      {/* ── Main Dashboard (Smart route for all authenticated roles) ── */}
       <Route path="/dashboard" element={
-        <ProtectedRoute roles={['employee']}>
-          <Layout><EmployeeDashboard /></Layout>
+        <ProtectedRoute>
+          <Layout><RoleDashboardRouter /></Layout>
         </ProtectedRoute>
       } />
+
+      {/* ── Shared & Self-Service routes ── */}
       <Route path="/profile" element={
         <ProtectedRoute>
           <Layout><ProfilePage /></Layout>
@@ -75,6 +86,12 @@ function AppRoutes() {
           <Layout><LeavePage /></Layout>
         </ProtectedRoute>
       } />
+      <Route path="/training" element={
+        <ProtectedRoute>
+          <Layout><TrainingPage /></Layout>
+        </ProtectedRoute>
+      } />
+      <Route path="/trainings" element={<Navigate to="/training" replace />} />
       <Route path="/announcements" element={
         <ProtectedRoute>
           <Layout><AnnouncementsPage /></Layout>
@@ -139,6 +156,16 @@ function AppRoutes() {
           <Layout><AnnouncementsManage /></Layout>
         </ProtectedRoute>
       } />
+
+      {/* ── Convenient Aliases & Shorthands ── */}
+      <Route path="/team" element={<Navigate to="/manager/team" replace />} />
+      <Route path="/employees" element={<Navigate to="/hr/employees" replace />} />
+      <Route path="/employees/add" element={<Navigate to="/hr/employees/add" replace />} />
+      <Route path="/directory" element={<Navigate to="/hr/employees" replace />} />
+      <Route path="/reports" element={<Navigate to="/hr/attendance" replace />} />
+      <Route path="/analytics" element={<Navigate to="/hr" replace />} />
+      <Route path="/admin" element={<Navigate to="/hr" replace />} />
+      <Route path="/notifications" element={<Navigate to="/announcements" replace />} />
 
       {/* 404 catch-all */}
       <Route path="*" element={

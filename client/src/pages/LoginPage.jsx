@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, demoLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname;
@@ -35,12 +35,9 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
     try {
-      const { authAPI } = await import('../api/index.js');
-      const res = await authAPI.demoLogin(role);
-      const { token: t, user: u } = res.data;
-      localStorage.setItem('staffsync_token', t);
-      // Force a full page reload so AuthContext picks up the new token and user
-      window.location.href = roleHome[u.role] || '/dashboard';
+      const u = await demoLogin(role);
+      const dest = roleHome[u.role] || '/dashboard';
+      navigate(dest, { replace: true });
     } catch (err) {
       setError(err.response?.data?.message || 'Demo login failed. Please try again.');
     } finally {

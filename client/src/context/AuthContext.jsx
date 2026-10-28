@@ -47,6 +47,15 @@ export function AuthProvider({ children }) {
     return u;
   };
 
+  const demoLogin = async (role) => {
+    const res = await authAPI.demoLogin(role);
+    const { token: t, user: u } = res.data;
+    localStorage.setItem('staffsync_token', t);
+    setToken(t);
+    setUser(u);
+    return u;
+  };
+
   const register = async (name, email, password) => {
     const res = await authAPI.register(name, email, password);
     const { token: t, user: u } = res.data;
@@ -57,7 +66,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ token, user, loading, login, demoLogin, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

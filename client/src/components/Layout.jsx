@@ -20,7 +20,8 @@ const ROLE_CONFIG = {
         links: [
           { to: '/dashboard', icon: 'bi-speedometer2', label: 'My Dashboard' },
           { to: '/attendance', icon: 'bi-clock-history', label: 'Attendance & Clock-In' },
-          { to: '/leaves', icon: 'bi-calendar2-check', label: 'Leave Requests' }
+          { to: '/leaves', icon: 'bi-calendar2-check', label: 'Leave Requests' },
+          { to: '/training', icon: 'bi-mortarboard', label: 'Training Programs' }
         ]
       },
       {
@@ -50,7 +51,8 @@ const ROLE_CONFIG = {
           { to: '/manager', icon: 'bi-speedometer2', label: 'Manager Dashboard' },
           { to: '/manager/team', icon: 'bi-people', label: 'Direct Reports' },
           { to: '/manager/attendance', icon: 'bi-clock-history', label: 'Team Attendance' },
-          { to: '/manager/leaves', icon: 'bi-calendar2-check', label: 'Leave Approvals' }
+          { to: '/manager/leaves', icon: 'bi-calendar2-check', label: 'Leave Approvals' },
+          { to: '/training', icon: 'bi-mortarboard', label: 'Team Training' }
         ]
       },
       {
@@ -89,6 +91,7 @@ const ROLE_CONFIG = {
         links: [
           { to: '/hr/attendance', icon: 'bi-clock-history', label: 'Attendance Report' },
           { to: '/hr/leaves', icon: 'bi-calendar2-check', label: 'Leave Governance' },
+          { to: '/training', icon: 'bi-mortarboard', label: 'Training Curriculum' },
           { to: '/hr/announcements', icon: 'bi-megaphone-fill', label: 'Internal Broadcasts' }
         ]
       },
